@@ -1,0 +1,169 @@
+<?php
+session_start();
+ include("connect.php");
+$user_id=$_SESSION["user_id_login"];
+$sqlLogin="select * from users where id=$user_id";
+$queryLogin=mysql_query($sqlLogin);
+$rw=mysql_fetch_array($queryLogin);
+  // echo $idreqot;
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Request Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Chaiwat" >
+    <link rel="stylesheet" type="text/css" href="request/admin-ui/flaticon.css">
+    <link href="datetimepicking/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"> 
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="shortcut icon" href="icon/favicon.png">
+    <link rel="stylesheet" type="text/css" href="admin-ui/flaticon.css">
+    <link rel="stylesheet" type="text/css" href="css/table.css">
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <div class="nav-collapse collapse">
+          <link rel="stylesheet" type="text/css" href="menu_files/swimbi.css"/>
+            <div id="swimbi">
+                <ul>
+                <li><a data-icon="&#xf00b" href="http://">จัดการใบคำขอ</a>
+                    <ul>
+                       <li><a data-icon="&#xf002" href="request.php">ค้นหาใบคำขอ</a></li>
+                       <li><a data-icon="&#xf0fe" href="addrequest.php">เพิ่มใบคำขอ</a></li>
+                    </ul>
+                </li>
+                    <li><a data-icon="&#xf02d" href="http://">คู่มือ</a></li>
+                </ul>
+            <canvas><noscript><img alt="Here swimbi via builder css menu" src="http://swimbi.com/img/swbnr1.png" /> visit swimbi.com. All Rights Reserved</noscript></canvas>
+            <div id="ie_message"><noscript>Local test in IE is better if you "<a href="http://f-source.com/swimbi/ie-allow-blocked-content/" target="_blank">Allow blocked content</a>" - click the button below.</noscript></div>
+            </div>
+            <script src="menu_files/swimbi.js"></script>
+            <p class="navbar-text pull-right">
+              <strong>Logged in as : </strong><a href="#" class="navbar-link"><font size="2"><?php echo $rw["username"];?></font></a>
+            </p>
+          </div><!--/.nav-collapse -->
+          </div>
+        </div>
+        <br>
+	     <table width="1000px" align="center" border="0"> 
+			<tr align="right">   	  
+   	     <td>ระบุรหัสใบคำขอ : <input><button class="btn-warning">ค้นหา</button></td>
+      	</tr>        
+        </table>
+        <br>
+      <table width="1200px" align="center" border="0">      
+      <tr>
+      <td style="font-size:20px"><strong>ตารางการขอใช้บริการฝ่ายสารสนเทศ</strong></td>
+      <td align="right"><i class="flaticon-clock96"></i> รอการตอบรับ |</td>
+      <td align="right"><i class="flaticon-gears5"></i> กำลังดำเนินการ |</td>
+      <td align="right"><i class="flaticon-verify8"></i> รออนุมัติ |</td>
+      <td align="right"><i class="flaticon-checkmark21"></i> เสร็จเรียบร้อย</td>		
+		</tr>      
+      </table>
+      <table width="1200px" class="imagetable" align="center" border="1px">
+		  <tr>
+          <th>ลำดับ</th>
+          <th>รหัสใบคำขอ</th>
+          <th>ชื่อผู้ใช้</th>
+          <th>วันที่</th>
+          <th>แผนก</th>
+          <th>ประเภทคำขอ</th>
+          <th>อาการเบื้องต้น</th>
+          <th>สถานะ</th>
+          <th>ผู้รับงาน</th>
+          <th>ผลการดำเนินงาน</th>
+        </tr>
+        <?php
+        $sql="select*from tbrequest";
+		  $query=mysql_query($sql);
+	     $result = mysql_fetch_array($query);
+		  $i=0;
+		  $n=1;
+       while($result = mysql_fetch_array($query)){
+          $reqid=$result["id"];
+          $uname=$result["username"];
+          $date=$result["dtadd"];
+          $dep=$result["depart"];
+          $cat=$result["cat"];
+          $prel=$result["preliminary"];
+          $stat=$result["status"];
+          $rec=$result["adminname"];
+          $i++;
+        ?>    
+        <td><?php echo $n++; ?> </td>
+        <td><?php echo $reqid ?></td>
+        <td><?php echo $uname ?></td>
+        <td><?php echo $date ?></td>
+        <td>
+			<?php
+				if($dep=="01") {
+					echo "IT";			
+				}
+				else if($dep=="02") {
+					echo "Telesales";				
+				}
+				else if($dep=="03") {
+					echo "Broker";				
+				}
+				else if($dep=="04") {
+					echo "Admin";				
+				}
+				else if($dep=="05") {
+					echo "Human Research";				
+				}
+				else if($dep=="06"){
+					echo "Research";				
+				}
+				else if($dep=="07") {
+					echo "QC";				
+				}
+				else if($dep=="08") {
+					echo "Domino";				
+				}
+				else if($dep=="09") {
+					echo "CSI";				
+				}
+				else if($dep=="10") {
+					echo "Health";				
+				}
+				else if($dep=="11") {
+					echo "Chev Campaign";				
+				}
+				else if($dep=="12") {
+					echo "CAC";				
+				}
+				else if($dep=="13") {
+					echo "Chevy Plus";				
+				}
+				else if($dep=="14") {
+					echo "Back Office";				
+				}
+				else if($dep=="15") {
+					echo "Account";				
+				}
+							
+			?>        
+        </td>
+        <td>..</td>
+        <td>..</td>
+        <td>..</td>
+        <td>..</td>
+        <td>..</td>
+        </tr>
+		     
+     
+     <?php } ?>
+     
+      </table>
+    </div>
+  </body>
+</html>
